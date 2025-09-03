@@ -1,26 +1,3 @@
-/*
-Raylib example file.
-This is an example main file for a simple raylib project.
-Use this as a starting point or replace it with your code.
-
--- Copyright (c) 2020-2024 Jeffery Myers
---
---This software is provided "as-is", without any express or implied warranty. In no event 
---will the authors be held liable for any damages arising from the use of this software.
-
---Permission is granted to anyone to use this software for any purpose, including commercial 
---applications, and to alter it and redistribute it freely, subject to the following restrictions:
-
---  1. The origin of this software must not be misrepresented; you must not claim that you 
---  wrote the original software. If you use this software in a product, an acknowledgment 
---  in the product documentation would be appreciated but is not required.
---
---  2. Altered source versions must be plainly marked as such, and must not be misrepresented
---  as being the original software.
---
---  3. This notice may not be removed or altered from any source distribution.
-
-*/
 
 #include "raylib.h"
 #include "raymath.h"
@@ -29,11 +6,21 @@ Use this as a starting point or replace it with your code.
 #include "lib.h"	// an external header in the static lib project
 
 
+Sound soundy;
+bool active;
+Wave temp;
+
 void GameInit()
 {
     SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
     InitWindow(InitialWidth, InitialHeight, "Example");
     SetTargetFPS(144);
+
+    active = false;
+
+    InitAudioDevice();
+     temp = LoadWave("resources/sound.wav");
+     soundy = LoadSoundFromWave(temp);
 
     // load resources
 }
@@ -47,6 +34,20 @@ void GameCleanup()
 
 bool GameUpdate()
 {
+    
+    if (IsMouseButtonDown)
+    {
+        if (GetMouseX() >= 250 && GetMouseY() >= 250)
+        {
+            DrawText("YES!!!", 50, 100, 50, GREEN);
+        }
+        else
+        {
+            DrawText("NO!!!", 50, 100, 50, RED);
+        }
+    }
+
+
     return true;
 }
 
@@ -55,7 +56,57 @@ void GameDraw()
     BeginDrawing();
     ClearBackground(DARKGRAY);
 
-    DrawText("Hello Raylib!", 10, 10, 20, GetTextColor());
+    DrawText("Hello Connor!", 10, 10, 20, GetTextColor());
+
+    Texture2D scope = LoadTextureFromImage(LoadImage("resources/Scope.png"));
+
+    Texture2D trump = LoadTextureFromImage(LoadImage("resources/trump.jpg"));
+    
+    DrawTexture(trump, 250, 250, WHITE);
+    DrawTextureEx(scope, { (float)GetMouseX() - scope.width / 2 * 0.33f, (float)GetMouseY() - (scope.height / 2) * 0.33f }, 0, 0.33f, WHITE);
+    
+   
+
+  /*
+    Image clippy = GetClipboardImage();
+
+    Texture2D throwitback = LoadTextureFromImage(clippy);
+    for (int x = 0; x < 20; x++)
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            DrawTexture(throwitback, i * 100 + (x * 150), i * 100, WHITE);
+        }
+    }
+    /*if (!IsSoundPlaying(soundy))
+    {
+        DrawText("Yes", 50, 100, 50, GREEN);
+        PlaySound(soundy);
+    }*/
+    if (!active)
+    {
+        PlaySound(soundy);
+        active = true;
+    }
+    else
+    {
+        
+    }
+
+    if (IsSoundPlaying(soundy))
+    {
+        
+    }
+    
+    
+        //DrawText("No Audio Init", 50, 100, 50, RED);
+    
+    
+    
+    
+
+    
+
 
     EndDrawing();
 }
