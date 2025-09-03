@@ -1,103 +1,137 @@
------------------------------------
+# Raylib Setup using Premake5
+This is a template system for building cross platform raylib projects using premake. It is focused on intermediate to advanced users.
+for a simple template, please see Raylib-QuickStart
 
-_DISCLAIMER:_
+  * https://github.com/raylib-extras/raylib-quickstart
 
-Welcome to **raylib game template**!
+## Video Tutorial
+A video covering this process is here
+https://youtu.be/--gI9083QnU
 
-This template provides a base structure to start developing a small raylib game in plain C. The repo is also pre-configured with a default `LICENSE` (zlib/libpng) and a `README.md` (this one) to be properly filled by users. Feel free to change the LICENSE as required.
+# Download this repository
+Download the game premake repository from 
+https://github.com/raylib-extras/game-premake/
+You can either download the zip file, or clone the repository.
+If you clone the repository, you may want to remove the stored history. Simply delete the .git directory to do this.
 
-All the sections defined by `$(Data to Fill)` are expected to be edited and filled properly. It's recommended to delete this disclaimer message after editing this `README.md` file.
+Rename the directory whatever you want. This will be the name of your game.
 
-This template has been created to be used with raylib (www.raylib.com) and it's licensed under an unmodified zlib/libpng license.
+# Example app
+This repository is pre-populated with a simple C++ starting application that uses external headers and a static library, simply as an example of how to set them up.
 
-_Copyright (c) 2014-2025 Ramon Santamaria ([@raysan5](https://twitter.com/raysan5))_
+# Generate Projects
+For windows users, there are two batch files you can use depending on what compiler you are using. For linux users you can simply use a terminal.
+Only do ONE of these options depending on your compiler and platform.
+## Visual Studio (MSVC) Users
+Visual Studio users should run
 
------------------------------------
-## Getting Started with this template
+    premake-VisualStudio.bat
+	
+This will generate a Visual Studio project.
 
-#### Linux
-When setting up this template on linux for the first time, install the dependencies from this page:
-([Working on GNU Linux](https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux))
+## Visual Studio Code (VSC) Users
+Visual Studio code uses the makefile systems for MinGW-w64, gcc, or clang on Windows, linux, and OSX respectivly. Simply follow the steps below for your OS and then continue to the VSC section below. Please make sure that you have the C/C++ extensions installed for VSC. Please make sure your compiler is in your path in order to use Visual Studio Code.
+	
+## MinGW-w64 Users
+Please make sure you have a recent version of MinGW-W64. The older versons from mingw.org will not work.
+We recommend the W64Devkit. It has everything needed to build raylib. It can be downloaded from here https://github.com/skeeto/w64devkit/releases
 
-You can use this templates in a few ways: using Visual Studio, using CMake, or make your own build setup. This repository comes with Visual Studio and CMake already set up.
+Once you have MinGW-W64
+Run the batch file.
 
-Chose one of the follow setup options that fit in you development environment.
+    premake-mingw.bat
 
-### Visual Studio
+This will generate a makefile for you.
 
-- After extracting the zip, the parent folder `raylib-game-template` should exist in the same directory as `raylib` itself.  So, your file structure should look like this:
-    - Some parent directory
-        - `raylib`
-            - the contents of https://github.com/raysan5/raylib
-        - `raylib-game-template`
-            - this `README.md` and all other raylib-game-template files
-- If using Visual Studio, open projects/VS2022/raylib-game-template.sln
-- Select on `raylib_game` in the solution explorer, then in the toolbar at the top, click `Project` > `Set as Startup Project`
-- Now you're all set up!  Click `Local Windows Debugger` with the green play arrow and the project will run.
+## Linux users
+cd to the root folder and run
 
-### CMake
+    ./premake5 gmake
 
-- Extract the zip of this project
-- Type the follow command:
+This will generate a makefile for you.
 
-```sh
-cmake -S . -B build
-```
+## macOS users
+cd to the root folder and run
 
-> if you want to configure your project to build with debug symbols, use the flag `-DCMAKE_BUILD_TYPE=Debug`
+    ./premake5.osx gmake
+	
+This will generate a makefile for you.
 
-- After CMake configures your project, build with:
+# Build your game
+Only do ONE of these options depending on your compiler and platform.
 
-```sh
-cmake --build build
-```
+## Visual Studio (MSVC) Users
+Double click the .sln file that was generated in the folder. From here you can use the project as normal.
 
-- Inside the build folder is another folder (named the same as the project name on CMakeLists.txt) with the executable and resources folder.
-- In order for resources to load properly, cd to `src` and run the executable (`../build/${PROJECT_NAME}/${PROJECT_NAME}`) from there.
+#Visual Studio Code (VSC) Users
+Game-premake comes with a visual studio code project file, simply open the folder in vscode and it should be setup to run the makefiles build for gcc or MinGW-w64. Just use the build, debug, or run functions in VSC
 
-- cmake will automatically download a current release of raylib but if you want to use your local version you can pass `-DFETCHCONTENT_SOURCE_DIR_RAYLIB=<dir_with_raylib>` 
+## MinGW-w64 Users
+Open your compiler terminal (w64devkit if you are using it), change to the game folder and type.
 
-## $(Game Title)
+    make
+	
+This will build your game
+	
+## Linux/macOS users
+Open your terminal, change to the root folder and type.
 
-![$(Game Title)](screenshots/screenshot000.png "$(Game Title)")
+    make
+	
+This will build your starting game template.
+	
+	
+# Building for other OpenGL targets
+If you need to build for a different OpenGL version than the default (OpenGL 3.3) you can specify an openGL version in your premake command line. Just modify the bat file or add the following to your command line.
 
-### Description
+## For OpenGL 1.1
+--graphics=opengl11
 
-$(Your Game Description)
+## For OpenGL 2.1
+--graphics=opengl21
 
-### Features
+## For OpenGL 4.3
+--graphics=opengl43
 
- - $(Game Feature 01)
- - $(Game Feature 02)
- - $(Game Feature 03)
+## For OpenGLES 2.0
+--graphics=opengles2
 
-### Controls
+## For OpenGLES 3.0
+--graphics=opengles3
 
-Keyboard:
- - $(Game Control 01)
- - $(Game Control 02)
- - $(Game Control 03)
+# Changing the static libs
+The example template uses a sample static lib. If you want to rename it or duplicate it, you can. Just be sure to change the link_to line in the premake5.lua file in the game folder. It needs to point the correct folder.
 
-### Screenshots
+link_to("LIB_FOLDER_NAME")
 
-_TODO: Show your game to the world, animated GIFs recommended!._
+Rerun premake and it will build your library for you.
+Note that by default link_to will add include dirs for your library folder and library/include. If you have other include needs you will have to add those to your premake file manually.
 
-### Developers
+If you do not want a static library, simply remove the link_to line from your lua script
 
- - $(Developer 01) - $(Role/Tasks Developed)
- - $(Developer 02) - $(Role/Tasks Developed)
- - $(Developer 03) - $(Role/Tasks Developed)
+# (Optional) Get Raylib
+If you wish to use a specific version of raylib, follow the instructions below. If you want the current development version, skip this section and premake will download raylib for you.
 
-### Links
+## Download Raylib
+Get the raylib sources from 
+https://github.com/raysan5/raylib
+Download the zip file, or clone the repository. It doesn't matter what one you use.
+Put the raylib sources in a folder called raylib inside your game folder (The same folder this file is in). The folder must be named raylib, it can not be raylib-master. The raylib folder should contain all the sources from raylib (including the 'src' folder).
 
- - YouTube Gameplay: $(YouTube Link)
- - itch.io Release: $(itch.io Game Page)
- - Steam Release: $(Steam Game Page)
+# License
+Copyright (c) 2020-2024 Jeffery Myers
 
-### License
+This software is provided "as-is", without any express or implied warranty. In no event 
+will the authors be held liable for any damages arising from the use of this software.
 
-This game sources are licensed under an unmodified zlib/libpng license, which is an OSI-certified, BSD-like license that allows static linking with closed source software. Check [LICENSE](LICENSE) for further details.
+Permission is granted to anyone to use this software for any purpose, including commercial 
+applications, and to alter it and redistribute it freely, subject to the following restrictions:
 
-$(Additional Licenses)
+  1. The origin of this software must not be misrepresented; you must not claim that you 
+  wrote the original software. If you use this software in a product, an acknowledgment 
+  in the product documentation would be appreciated but is not required.
 
-*Copyright (c) $(Year) $(User Name) ($(User Twitter/GitHub Name))*
+  2. Altered source versions must be plainly marked as such, and must not be misrepresented
+  as being the original software.
+
+  3. This notice may not be removed or altered from any source distribution.
