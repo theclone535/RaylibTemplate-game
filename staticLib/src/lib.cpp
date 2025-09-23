@@ -24,6 +24,8 @@ Use this as a starting point or replace it with your code.
 
 #include "lib.h"
 
+
+
 Color GetTextColor()
 {
     return RED;

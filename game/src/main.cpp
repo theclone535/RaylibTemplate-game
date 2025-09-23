@@ -5,24 +5,30 @@
 #include "game.h"   // an external header in this project
 #include "lib.h"	// an external header in the static lib project
 
+#include "RakNet.h"
 
-Sound soundy;
-bool active;
-Wave temp;
+Rectangle player1;
+Vector2 position;
 
 void GameInit()
 {
     SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
     InitWindow(InitialWidth, InitialHeight, "Example");
     SetTargetFPS(144);
-
+    /*
     active = false;
 
     InitAudioDevice();
      temp = LoadWave("resources/sound.wav");
      soundy = LoadSoundFromWave(temp);
 
-    // load resources
+    // load resources */
+
+    player1.x = 25;
+    player1.y = 25;
+    player1.width = 25;
+    player1.height = 25;
+
 }
 
 void GameCleanup()
@@ -34,20 +40,26 @@ void GameCleanup()
 
 bool GameUpdate()
 {
-    
-    if (IsMouseButtonDown)
+    position = { 0, 0 };
+
+    //Player controls
+    if (IsKeyDown(KEY_W))
     {
-        if (GetMouseX() >= 250 && GetMouseY() >= 250)
-        {
-            DrawText("YES!!!", 50, 100, 50, GREEN);
-        }
-        else
-        {
-            DrawText("NO!!!", 50, 100, 50, RED);
-        }
+        player1.y -= 1;
     }
-
-
+    else if (IsKeyDown(KEY_A))
+    {
+        player1.x -= 1;
+    }
+    else if (IsKeyDown(KEY_S))
+    {
+        player1.y += 1;
+    }
+    else if (IsKeyDown(KEY_D))
+    {
+        player1.x += 1;
+    }
+    
     return true;
 }
 
@@ -56,6 +68,8 @@ void GameDraw()
     BeginDrawing();
     ClearBackground(DARKGRAY);
 
+    //previous testing
+    /*
     DrawText("Hello Connor!", 10, 10, 20, GetTextColor());
 
     Texture2D scope = LoadTextureFromImage(LoadImage("resources/Scope.png"));
@@ -67,7 +81,7 @@ void GameDraw()
     
    
 
-  /*
+  
     Image clippy = GetClipboardImage();
 
     Texture2D throwitback = LoadTextureFromImage(clippy);
@@ -82,7 +96,7 @@ void GameDraw()
     {
         DrawText("Yes", 50, 100, 50, GREEN);
         PlaySound(soundy);
-    }*/
+    }
     if (!active)
     {
         PlaySound(soundy);
@@ -101,9 +115,9 @@ void GameDraw()
     
         //DrawText("No Audio Init", 50, 100, 50, RED);
     
-    
-    
-    
+    */ // //previous contraption
+    //DrawRectanglePro(Rectangle rec, Vector2 origin, float rotation, Color color);
+    DrawRectanglePro(player1, Vector2{0, 0}, 0.0f, WHITE);
 
     
 
